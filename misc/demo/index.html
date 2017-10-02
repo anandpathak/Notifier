@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" id="top">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Notification Directive in angular</title>
+    <script src="components/angular/angular.min.js"></script>
+</head>
+<body ng-app="demoApp" window-exit>
+        <div ng-controller="testController">
+          <select ng-model="x_axis">
+              <option value="left">Left</option>
+              <option value="right">Right</option>
+          </select>
+          <select ng-model="y_axis">
+              <option value="top">Top</option>
+              <option value="bottom">Bottom</option>
+          </select>
+          <select ng-model="type">
+              <option value="error">Error</option>
+              <option value="warning">Warning</option>
+              <option value="info">Info</option>
+              <option value="success">success</option>
+          </select>
+           <button ng-click="notify()">Notify</button>
+        </div>
+        <script src="components/notifier/ui-1.6.5.min.js"></script>
+</body>
+    <script type="text/javascript">
+    var app=angular.module('demoApp', ['notifier']);
+        app.controller('testController', ['$scope','Notify', function($scope,Notify){
+                // Notify({header: "a simple header","message":"this is a example",type:"warning"});
+                 $scope.count=1;
+                $scope.notify=function(left){
+                    Notify({
+                            header: $scope.count+" simple header",
+                            "message":"this is a example",
+                            type:$scope.type,
+                            "X":$scope.x_axis,
+                            "Y":$scope.y_axis
+                        });
+                    $scope.count++;
+                }
+            }]);
+    </script>
+</html>
