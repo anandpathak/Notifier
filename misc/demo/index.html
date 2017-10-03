@@ -25,10 +25,21 @@
           </select>
            <button ng-click="notify()">Notify</button>
         </div>
-        <script src="components/notifier/ui-1.6.5.min.js"></script>
+        <script src="../../dist/ui-1.6.5.js"></script>
 </body>
     <script type="text/javascript">
     var app=angular.module('demoApp', ['notifier']);
+    app.config(["NotifyProvider",function(NotifyProvider){
+      NotifyProvider.configure({
+         maxCount: 0,
+        timeout: 5000,
+        startTop: 10,
+        startRight: 10,
+        horizontal: 'right',
+        vertical: 'bottom',
+        max_message:5,
+      })
+    }]);
         app.controller('testController', ['$scope','Notify', function($scope,Notify){
                 // Notify({header: "a simple header","message":"this is a example",type:"warning"});
                  $scope.count=1;

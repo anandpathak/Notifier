@@ -2,7 +2,7 @@
  * notifier
  * 
 
- * Version: 1.6.5 - 2017-10-03
+ * Version: 1.6.5 - 2017-10-04
  * License: 
  */
 angular.module('ui', [
@@ -57,8 +57,8 @@ angular.module('notifier', ['notifier_template.html']).provider('Notify', functi
         scope.header = $sce.trustAsHtml(args.header || '');
         scope.message = $sce.trustAsHtml(args.message || '');
         scope.type = args.type || 'info';
-        scope.X = args.X || 'right';
-        scope.Y = args.Y || 'top';
+        scope.X = args.X || options.horizontal;
+        scope.Y = args.Y || options.vertical;
         scope.icons = {
           'info': [
             'fa-bell-o',

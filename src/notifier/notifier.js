@@ -8,6 +8,7 @@
  */
 angular.module('notifier_template.html', []).run(['$templateCache', function($templateCache) {
   $templateCache.put('template/notifier/notifier.html',
+    '<div>\n'+ 
     '<style type=\'text/css\'>\n' +
     '   @import url(https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css);\n' +
     '@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:700,400,300);\n' +
@@ -137,19 +138,19 @@ angular.module('notifier_template.html', []).run(['$templateCache', function($te
     '       <p class=\'u-italic\'>{{message}}</p>\n' +
     '   </div>\n' +
     '   <button class=\'Message-close js-messageClose\' ng-click=\'$close($event)\'><i class=\'fa fa-times\'></i></button>\n' +
-    '</div>');
+    '</div></div>');
 }]);
 
 angular.module('notifier', ['notifier_template.html'])
     .provider('Notify',function(){
-            this.options = {
-        maxCount: 0,
-        timeout: 5000,
-        startTop: 10,
-        startRight: 10,
-        horizontal: 'left',
-        vertical: 'top',
-        max_message:5,
+        this.options = {
+            maxCount: 0,
+            timeout: 5000,
+            startTop: 10,
+            startRight: 10,
+            horizontal: 'left',
+            vertical: 'top',
+            max_message:5,
     }
     this.configure=function(options){
         if(!angular.isObject(options)){
@@ -167,8 +168,8 @@ angular.module('notifier', ['notifier_template.html'])
                 scope.header=$sce.trustAsHtml(args.header || "");
                 scope.message = $sce.trustAsHtml(args.message || "");
                 scope.type= args.type || 'info';
-                scope.X=args.X || "right";
-                scope.Y=args.Y || "top";
+                scope.X=args.X || options.horizontal;
+                scope.Y=args.Y || options.vertical;
                 scope.icons= {
                    "info" :["fa-bell-o",""],
                    "warning": ["fa-exclamation" , "Message--orange"],
@@ -184,7 +185,9 @@ angular.module('notifier', ['notifier_template.html'])
                 scope.space[scope["Y"]]= scope.height+"px";
                 var template=$templateCache.get('template/notifier/notifier.html');
                 var elem= $compile(template)(scope);
+                scope.$digest();
                 var content=angular.element(document.querySelector('body')).append(elem);
+
                 scope.$close=function(){
                     elem.remove();
                 }
