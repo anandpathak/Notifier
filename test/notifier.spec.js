@@ -9,7 +9,11 @@ describe('notifier', function() {
 	});
 	beforeEach(inject(function(_$timeout_){
 		timeout=_$timeout_;
-	}))
+	}));
+  beforeEach(function(done) {
+    done();
+  });
+
 	//Get the provider 
 	 function providerGetter(moduleName, providerName) {
             var provider;
@@ -17,13 +21,14 @@ describe('notifier', function() {
                          [providerName, function(Provider) { provider = Provider; }]);
             return function() { inject(); return provider; }; // inject calls the above
         }
+
   	it('Define Provider',function () {
-  		console.log(notifier_config.options);
   		expect(notifier_config).not.toBeUndefined();
 	});
+
   	it('set Notification configuration',function(){
   		var conf={
-  			maxCount: 0,
+  			    maxCount: 0,
             timeout: 10000,
             startTop: 15,
             startRight: 20,
@@ -34,6 +39,7 @@ describe('notifier', function() {
   		notifier_config.configure(conf);
   		expect(notifier_config.options).toEqual(conf);
   	});
+
   	it('Trigger notification', inject(function(Notify){
   		Notify({
   			header: "A example Header",
@@ -41,6 +47,7 @@ describe('notifier', function() {
   		});
   		expect(document.getElementsByClassName("Message").length).not.toEqual(0);
   	}))
+
   	it('notification details test', inject(function(Notify){
   		var data= {
   			header: "header",
@@ -60,6 +67,7 @@ describe('notifier', function() {
   		actual_data.type="error";
   		expect(actual_data).toEqual(data);
   	}));
+
   	it('Notification auto disable', inject(function(Notify){
   		Notify({
   			header: "header",
@@ -69,10 +77,10 @@ describe('notifier', function() {
   			Y:"top",
   		});
   		var before=document.getElementsByClassName("Message").length;
+      timeout.flush();
+      var after =document.getElementsByClassName("Message").length;
+      expect(after).not.toEqual(before)
   		
-  			var after =document.getElementsByClassName("Message").length;
-  			console.log(before+ " , " + after);
-  		timeout.flush();
   		
   	}))
 });

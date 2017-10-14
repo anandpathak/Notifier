@@ -6,26 +6,148 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Notification Directive in angular</title>
     <script src="components/angular/angular.min.js"></script>
+    <style type="text/css">
+       @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:700,400,300);
+      body {
+        font-family: 'Source Sans Pro';
+      }
+      h3 {
+        background : aliceblue;
+      }
+      h4 {
+        background: aliceblue;
+      }
+      pre {
+        background: #eff0f1;
+        font-size: 1.1em;
+      }
+      .center{
+        text-align: center;
+      }
+      .select-style {
+        border: 1px solid #ccc;
+        width: 120px;
+        border-radius: 3px;
+        overflow: hidden;
+        background: #fafafa;
+        margin-top: 10px;
+      }
+
+      .select-style select {
+          padding: 5px 8px;
+          width: 130%;
+          border: none;
+          box-shadow: none;
+          background: transparent;
+          background-image: none;
+          -webkit-appearance: none;
+      }
+
+      .select-style select:focus {
+          outline: none;
+      }
+      .button {
+          background-color: #635fd5;
+          border: none;
+          color: white;
+          padding: 7px 21px;
+          margin-top: 20px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 16px;
+      }
+    </style>
 </head>
 <body ng-app="demoApp" window-exit>
-        <div ng-controller="testController">
-          <select ng-model="x_axis">
-              <option value="left">Left</option>
-              <option value="right">Right</option>
-          </select>
-          <select ng-model="y_axis">
-              <option value="top">Top</option>
-              <option value="bottom">Bottom</option>
-          </select>
-          <select ng-model="type">
-              <option value="error">Error</option>
-              <option value="warning">Warning</option>
-              <option value="info">Info</option>
-              <option value="success">success</option>
-          </select>
-           <button ng-click="notify()">Notify</button>
+        <div >
+            <h3>A angular1 module for notification </h3>
+            <ul>
+              <li><h4> Features</h4> </li>
+              <p class="sub">
+                <ul>
+                  <li>No dependencies.</li>
+                  <li>Very Small size.</li>
+                  <li>Support different Type of Notification</li>
+                  <li>Customisable option </li>
+                </ul>
+              </p>
+              <li><h4> Install</h4> </li>
+               <p class="sub">
+                <ul>
+                  <li>To install the Package download the Module from `dist` folder</li>
+                  <li> Load the js in your html</li>
+                  <li ><i>&lt;script src="ui-1.6.5.min.js" &gt;</i></li>
+
+                </ul>
+              </p>
+              <li><h4> Usages</h4> </li>
+               <p class="sub">
+                <ul>
+                  <li>To use the Module, it need to be injected into the angular application. Module config can also be extended</li>
+                  <pre>
+                      var app=angular.module('demoApp', ['notifier']);
+                      app.config(["NotifyProvider",function(NotifyProvider){
+                        NotifyProvider.configure({
+                           maxCount: 0,
+                          timeout: 5000,
+                          startTop: 10,
+                          startRight: 10,
+                          horizontal: 'right',
+                          vertical: 'bottom',
+                          max_message:5,
+                        })
+                      }]);
+                      </pre>
+                    <li>maxCount is the count of notification, timeout shows the time duration notification should exist and startTop, startRight,horizontal, vertical are for positioning the notification. max_message is the number of notification allowed in a group</li>
+                    <li>To trigger a Notification, Notify should be inject in controller/ service</li>
+                    <pre>
+                      app.controller('testCtrl', ['Notify', function(Notify){
+                        Notify({
+                            header: " simple header",
+                            "message":"this is a example",
+                            type:"error",
+                            "X":"right",
+                            "Y":"top"
+                        })
+                      });
+                    </pre>
+                    <li>type : error, warning, success, info. </li>
+                    <li>X : right, left and Y can be top or bottom </li>
+                </ul>
+              </p>
+              <li>
+                  <h3>Check out a Demo</h3>
+              </li>
+            </ul>
+
+
         </div>
-        <script src="../../dist/ui-1.6.5.js"></script>
+        <div ng-controller="testController" class="center">
+          <div>
+            X-AXIS : <select ng-model="x_axis" class="select-style">
+                    <option value="left" >Left</option>
+                    <option value="right">Right</option>
+                  </select>
+          </div>
+          <div>
+            Y-AXIS :  <select ng-model="y_axis" class="select-style">
+                        <option value="top" >Top</option>
+                        <option value="bottom">Bottom</option>
+                      </select>
+          </div>
+
+          <div>
+           Notification Type:  <select ng-model="type" ng-init="info" class="select-style">
+                                <option value="error" >Error</option>
+                                <option value="warning">Warning</option>
+                                <option value="info">Info</option>
+                                <option value="success">success</option>
+                              </select>
+          </div>
+           <button ng-click="notify()" class="button">Notify</button>
+        </div>
+        <script src="components/notifier/ui-1.6.5.min.js"></script>
 </body>
     <script type="text/javascript">
     var app=angular.module('demoApp', ['notifier']);

@@ -186,24 +186,26 @@ module.exports = function(grunt) {
     },
     // ABC : not used.
     ngdocs: {
-      options: {
-        dest: 'dist/docs',
-        scripts: [
-          'angular.js',
-          '<%= concat.dist_tpls.dest %>'
-        ],
-        styles: [
-          'docs/css/style.css'
-        ],
-        navTemplate: 'docs/nav.html',
-        title: 'ui-bootstrap',
-        html5Mode: false
-      },
-      api: {
-        src: ['src/**/*.js', 'src/**/*.ngdoc'],
-        title: 'API Documentation'
-      }
-    }
+    //   options: {
+    //     dest: 'dist/docs',
+    //     scripts: [
+    //       'angular.js',
+    //       '<%= concat.dist_tpls.dest %>'
+    //     ],
+    //     styles: [
+    //       'docs/css/style.css'
+    //     ],
+    //     navTemplate: 'docs/nav.html',
+    //     title: 'ui-bootstrap',
+    //     html5Mode: false
+    //   },
+    //   api: {
+    //     src: ['src/**/*.js', 'src/**/*.ngdoc'],
+    //     title: 'API Documentation'
+    //   }
+      all: ['src/**/*.js']
+     }
+    
   });
 
   //register before and after test tasks so we've don't have to change cli
@@ -341,7 +343,7 @@ module.exports = function(grunt) {
     grunt.config('concat.dist_tpls.src', grunt.config('concat.dist_tpls.src')
                  .concat(srcFiles).concat(tpljsFiles));
 
-    grunt.task.run(['concat', 'ngmin', 'uglify']);
+    grunt.task.run(['concat', 'ngmin', 'uglify','ngdocs']);
   });
 
   grunt.registerTask('test', 'Run tests on singleRun karma server', function () {

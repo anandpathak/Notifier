@@ -1,11 +1,11 @@
-
 /**
- * 
- * @name ui.notifier
- *
+ * @ngdoc overview
+ * @name notifier_template.Run:NotificationTemplate
  * @description
- * Describe the Notifier component here.
+ * # Notification Httml
+ * Html, Css for the Notification popup are stored into a $templateCache.
  */
+
 angular.module('notifier_template.html', []).run(['$templateCache', function($templateCache) {
   $templateCache.put('template/notifier/notifier.html',
     '<div>\n'+ 
@@ -18,7 +18,7 @@ angular.module('notifier_template.html', []).run(['$templateCache', function($te
     '\n' +
     '.Message {\n' +
     '  display: table;\n' +
-    '  position: absolute;\n' +
+    '  position: fixed;\n' +
     '  margin: 40px auto 0;\n' +
     '  width: 450px;\n' +
     '  background-color: #0074D9;\n' +
@@ -141,7 +141,29 @@ angular.module('notifier_template.html', []).run(['$templateCache', function($te
     '</div></div>');
 }]);
 
+/**
+ * @ngdoc overview
+ * @name notifier
+ * @description
+ * # Angular Module to generate Notification Popups 
+ * 
+ */
 angular.module('notifier', ['notifier_template.html'])
+
+/**
+ * @ngdoc object
+ * @name notifier.provider:Provider
+ * @param {integer} [Configure.maxCount=0] count of the number of Notification
+ * @param {integer} [Configure.timeout=5000] Notification Stay Duration in ms.
+ * @param {integer} [Configure.startTop=10] Margin from Top/Bottom
+ * @param {integer} [Configure.startRight=10] Margin from Right/Left
+ * @param {string} [Configure.horizontal='left'] Notification horizontal position 'left'/'right'
+ * @param {string} [Configure.vertical='top'] Notification horizontal position 'top'/'bottom'
+ * @param {integer} [Configure.max_message=5] Maximum number of message in a group
+ * @description
+ *  Pass Parameter to customise Notification
+ *  maxCount: number
+ */
     .provider('Notify',function(){
         this.options = {
             maxCount: 0,
@@ -160,10 +182,22 @@ angular.module('notifier', ['notifier_template.html'])
             this.options=options;
         }
     }
+    /**
+ * @ngdoc service
+ * @name notifier.service:Notify
+ * @param {string} object.header Header message 
+ * @param {string} object.message message
+ * @param {string} [object.type='info'] type of notification. values : 'info','error','warning','success'
+ * @param {string} [object.X='left'] Notification horizontal position 'left'/'right'
+ * @param {string} [object.Y='top'] Notification horizontal position 'top'/'bottom'
+ * @description
+ *  Pass Parameter to customise Notification
+ *  maxCount: number
+    */
     this.$get=function($timeout, $http, $compile, $templateCache, $rootScope, $injector, $sce, $q, $window){
         var options=this.options;
         var show= function(args){
-            console.log(options.maxCount++);
+            //console.log(this.options);
             var scope=$rootScope.$new();
                 scope.header=$sce.trustAsHtml(args.header || "");
                 scope.message = $sce.trustAsHtml(args.message || "");
@@ -185,7 +219,7 @@ angular.module('notifier', ['notifier_template.html'])
                 scope.space[scope["Y"]]= scope.height+"px";
                 var template=$templateCache.get('template/notifier/notifier.html');
                 var elem= $compile(template)(scope);
-                scope.$digest();
+
                 var content=angular.element(document.querySelector('body')).append(elem);
 
                 scope.$close=function(){
